@@ -1,0 +1,9 @@
+Guia!
+
+[Configurar] npm fund
+[Configurar] npm install
+[Configurar] Ajustar .env com seus dados de conexão!
+
+[Executar] npx prisma generate (Cria arquivo de migrations)
+[Banco] npx prisma migrate dev --name init (Cria o banco de dados na migração)
+[Executar] node src/index.js

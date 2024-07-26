@@ -1,42 +1,16 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
 
-  - You are about to drop the column `name` on the `User` table. All the data in the column will be lost.
-  - You are about to drop the `Category` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Post` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `Profile` table. If the table is not empty, all the data it contains will be lost.
-  - You are about to drop the `_CategoryToPost` table. If the table is not empty, all the data it contains will be lost.
-  - Added the required column `bio` to the `User` table without a default value. This is not possible if the table is not empty.
+-- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "nome" TEXT,
+    "bio" TEXT NOT NULL,
+    "role" "Role" NOT NULL DEFAULT 'USER',
 
-*/
--- DropForeignKey
-ALTER TABLE "Post" DROP CONSTRAINT "Post_authorId_fkey";
-
--- DropForeignKey
-ALTER TABLE "Profile" DROP CONSTRAINT "Profile_userId_fkey";
-
--- DropForeignKey
-ALTER TABLE "_CategoryToPost" DROP CONSTRAINT "_CategoryToPost_A_fkey";
-
--- DropForeignKey
-ALTER TABLE "_CategoryToPost" DROP CONSTRAINT "_CategoryToPost_B_fkey";
-
--- AlterTable
-ALTER TABLE "User" DROP COLUMN "name",
-ADD COLUMN     "bio" TEXT NOT NULL,
-ADD COLUMN     "nome" TEXT;
-
--- DropTable
-DROP TABLE "Category";
-
--- DropTable
-DROP TABLE "Post";
-
--- DropTable
-DROP TABLE "Profile";
-
--- DropTable
-DROP TABLE "_CategoryToPost";
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Postagem" (
@@ -59,10 +33,23 @@ CREATE TABLE "Categoria" (
 );
 
 -- CreateTable
+CREATE TABLE "Comentario" (
+    "id" SERIAL NOT NULL,
+    "texto" TEXT NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "postagemId" INTEGER NOT NULL,
+
+    CONSTRAINT "Comentario_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "_CategoriaToPostagem" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_CategoriaToPostagem_AB_unique" ON "_CategoriaToPostagem"("A", "B");
@@ -72,6 +59,12 @@ CREATE INDEX "_CategoriaToPostagem_B_index" ON "_CategoriaToPostagem"("B");
 
 -- AddForeignKey
 ALTER TABLE "Postagem" ADD CONSTRAINT "Postagem_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comentario" ADD CONSTRAINT "Comentario_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Comentario" ADD CONSTRAINT "Comentario_postagemId_fkey" FOREIGN KEY ("postagemId") REFERENCES "Postagem"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_CategoriaToPostagem" ADD CONSTRAINT "_CategoriaToPostagem_A_fkey" FOREIGN KEY ("A") REFERENCES "Categoria"("id") ON DELETE CASCADE ON UPDATE CASCADE;
