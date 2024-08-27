@@ -11,28 +11,29 @@ model User {
   id            Int      @id @default(autoincrement())
   email         String   @unique
   nome          String?
-  bio           String
+  bio           String?
   role          Role     @default(USER)
+  senha         String
   postagens     Postagem[]
   Comentarios   Comentario[]
 }
 
 model Postagem {
-  id                Int        @id @default(autoincrement())
-  dataPostagem      DateTime   @default(now())
-  dataAtualizacao   DateTime   @updatedAt
-  titulo            String
-  conteudo          String     @default("Digite seu texto aqui")
-  autor             User       @relation(fields: [userId], references: [id])
-  userId            Int
-  Categorias        Categoria[]
-  Comentario        Comentario[]
+  id              Int          @id @default(autoincrement())
+  dataPostagem    DateTime     @default(now())
+  dataAtualizacao DateTime     @updatedAt
+  titulo          String
+  conteudo        String       @default("Digite seu texto aqui")
+  autor           User         @relation(fields: [userId], references: [id])
+  userId          Int
+  categorias      Categoria[]
+  comentarios     Comentario[]
 }
 
 model Categoria {
-  id        Int    @id @default(autoincrement())
-  name      String
-  postagens Postagem[]
+  id         Int          @id @default(autoincrement())
+  name       String
+  postagens  Postagem[]
 }
 
 model Comentario {
