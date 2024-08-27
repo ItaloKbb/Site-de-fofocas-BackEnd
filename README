@@ -1,4 +1,35 @@
+Principais Endpoints e Funcionalidades:
 
+Usuários:
+Cadastro e Autenticação: Endpoints para registro de novos usuários, login e autenticação via JWT.
+Gerenciamento de Perfis: Permite a atualização de perfis de usuário, incluindo informações como nome, bio, e senha.
+Postagens do Usuário: Listagem, criação, atualização e exclusão de postagens associadas ao perfil do usuário.
+
+Postagens:
+Criação de Postagens: Endpoint para criar novas postagens, permitindo a conexão com categorias específicas e autoria.
+Leitura de Postagens: Recupera postagens com base em filtros como título, conteúdo ou categorias, suportando busca sensível a maiúsculas e minúsculas.
+Atualização de Postagens: Permite a edição de títulos, conteúdos e categorias associadas às postagens existentes.
+Exclusão de Postagens: Endpoints para remover postagens do banco de dados.
+
+Categorias:
+Gerenciamento de Categorias: Criação, leitura, atualização e exclusão de categorias de postagens, permitindo organizar conteúdos por temas como celebridades, eventos, etc.
+Conexão com Postagens: Permite a associação de postagens a categorias específicas, garantindo que o conteúdo seja organizado de maneira coerente.
+
+Comentários:
+Criação de Comentários: Permite aos usuários comentar em postagens, conectando o comentário tanto ao usuário quanto à postagem.
+Leitura de Comentários: Recupera todos os comentários, com possibilidade de incluir informações sobre o autor e a postagem relacionada.
+Atualização de Comentários: Endpoint para edição de comentários existentes.
+Exclusão de Comentários: Permite a remoção de comentários do banco de dados.
+
+Moderação:
+Ferramentas de Moderação: Suporte para moderação de conteúdo, permitindo a revisão e remoção de postagens ou comentários que violem as regras da comunidade.
+
+Tecnologias Utilizadas:
+Back-End: Node.js com Express para a construção da API.
+ORM: Prisma, utilizado para gerenciar as operações com o banco de dados PostgreSQL.
+Autenticação: JWT (JSON Web Token) para autenticação segura de usuários.
+Banco de Dados: PostgreSQL, escolhido por sua robustez e capacidade de lidar com grandes volumes de dados.
+Log e Depuração: Configuração de logs detalhados para monitoramento de consultas e depuração de erros.
 
 Guia!
 
