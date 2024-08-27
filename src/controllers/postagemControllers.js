@@ -7,23 +7,27 @@ const prisma = new PrismaClient({
 const createPostagem = async (req, res) => {
     const { titulo, conteudo, userId, categorias } = req.body;
     try {
-      // Criar a postagem
-      const novaPostagem = await prisma.postagem.create({
-        data: {
-          titulo,
-          conteudo,
-          autor: {
-            connect: { id: userId }
-          },
-          Categorias: categorias && Array.isArray(categorias) ? {
-            connect: categorias.map((categoriaId) => ({ id: categoriaId }))
-          } : undefined
-        },
-      });
-  
-      res.json(novaPostagem);
+        // Criar a postagem e conectar as categorias
+        const novaPostagem = await prisma.postagem.create({
+            data: {
+                titulo,
+                conteudo,
+                autor: {
+                    connect: { id: userId }
+                },
+                categorias: categorias && Array.isArray(categorias) ? {
+                    connect: categorias.map((categoriaId) => ({ id: categoriaId }))
+                } : undefined
+            },
+            include: {
+                categorias: true,  // Certifique-se de incluir categorias aqui também
+                autor: true,
+            }
+        });
+    
+        res.json(novaPostagem);
     } catch (error) {
-      res.status(500).json({ error: 'Erro ao criar a postagem', details: error.message });
+        res.status(500).json({ error: 'Erro ao criar a postagem', details: error.message });
     }
 };
 
