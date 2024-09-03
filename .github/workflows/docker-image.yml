@@ -37,7 +37,7 @@ jobs:
         docker buildx build --cache-from=type=local,src=/tmp/.buildx-cache \
                             --cache-to=type=local,dest=/tmp/.buildx-cache-new \
                             --file Dockerfile \
-                            --tag my-image-name:$(date +%s) \
+                            --tag FoufouDocker:$(date +%s) \
                             --push .
       env:
         DOCKER_BUILDKIT: 1
