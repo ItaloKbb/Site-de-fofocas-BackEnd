@@ -12,25 +12,24 @@ WORKDIR /app
 # Set production environment
 ENV NODE_ENV="production"
 
-
 # Throw-away build stage to reduce size of final image
 FROM base as build
 
 # Install packages needed to build node modules
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential node-gyp openssl pkg-config python-is-python3
+    apt-get install --no-install-recommends -y build-essential node-gyp openssl pkg-config python-is-python3 && \
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Install node modules
-COPY --link package-lock.json package.json ./
+COPY package-lock.json package.json ./
 RUN npm ci
 
 # Generate Prisma Client
-COPY --link prisma .
+COPY prisma ./
 RUN npx prisma generate
 
 # Copy application code
-COPY --link . .
-
+COPY . .
 
 # Final stage for app image
 FROM base
@@ -38,7 +37,7 @@ FROM base
 # Install packages needed for deployment
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y openssl && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+    rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Copy built application
 COPY --from=build /app /app
