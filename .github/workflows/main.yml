@@ -1,0 +1,32 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Copy files to server
+      uses: appleboy/scp-action@master
+      with:
+        host: 147.79.107.77
+        username: root
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        source: "."
+        target: "/var/www/html/foufoubackend"
+
+    - name: Reload Nginx
+      uses: appleboy/ssh-action@master
+      with:
+        host: 147.79.107.77
+        username: root
+        key: ${{ secrets.SSH_KEY }}
+        port: 22
+        script: sudo systemctl reload nginx
